@@ -23,9 +23,14 @@ func main() {
 	defer rotatingLogger.Close()
 	r := gin.New()
 
+	//middlewares
 	r.Use(middleware.Logger(rotatingLogger))
+	r.Use(middleware.RateLimiter(5)) 
+
+	//route
 	r.GET("/health", health)
 
+	//serve
 	r.Run(":8080")
 }
 func health(c *gin.Context) {
